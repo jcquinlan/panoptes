@@ -35,7 +35,10 @@ class ProjectItemContainer extends Component {
         return (
         <div className="row">
             <div className="col-xs-12">
-                <ProjectItem timeTotal={ this.state.times['time-totals'] } timeEstimates={ this.state.times['time-estimates'] } project={ this.props.project }/>
+                <ProjectItem 
+                    timeTotal={ this.state.times['time-totals']['total-hours-sum'] } 
+                    timeEstimates={ this.state.times['time-estimates']['total-hours-estimated'] } 
+                    project={ this.props.project }/>
             </div>
         </div>
         )

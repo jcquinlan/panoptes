@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
+import HorizontalBar from './HorizontalBar';
 
 class ProjectItem extends Component {
   render() {
@@ -11,6 +12,7 @@ class ProjectItem extends Component {
 
     return (
         <Card>
+            <HorizontalBar total={ this.props.timeTotal } partial={ this.props.timeEstimates }/>
             <CardTitle title={ this.props.project.name } subtitle={ 'Created: ' + created_on.toLocaleTimeString("en-us", options) } />
             <CardText>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
