@@ -14,19 +14,17 @@ import info from './keys.js';
 import { hasKeyGuard } from './guards/hasKeyGuard';
 
 import ProjectList from './components/ProjectList';
-import ChooseKey from './components/ChooseKey';
+import CompanyKeyContainer from './components/CompanyKeyContainer';
 
 axios.defaults.baseURL = `http://${ info.company }.teamwork.com`;
-axios.defaults.headers.common['Authorization'] = 'Basic ' + btoa(`${ info.API }:anything`);
 axios.defaults.headers.common['Accept'] = `application/json; charset=utf-8`;
-
-console.log(hasKeyGuard);
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       slideoutOpen: false,
+      company: '',
     }
   }
 
@@ -55,13 +53,17 @@ class App extends Component {
             <div className="container">
                 <Router history={ browserHistory }>
                   <Route path="/" component={ ProjectList } onEnter={ hasKeyGuard }></Route>
-                  <Route path="/key" component={ ChooseKey }></Route>
+                  <Route path="/key" component={ CompanyKeyContainer }></Route>
                 </Router>
             </div>
           </div>
         </div>
         </MuiThemeProvider>
     );
+  }
+
+  componentDidMount() {
+
   }
 
   toggleSlideout(){
