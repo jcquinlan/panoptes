@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Router, Route, browserHistory } from 'react-router'
 import './App.scss';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -10,12 +11,16 @@ injectTapEventPlugin();
 
 import axios from 'axios';
 import info from './keys.js';
+import { hasKeyGuard } from './guards/hasKeyGuard';
 
 import ProjectList from './components/ProjectList';
+import ChooseKey from './components/ChooseKey';
 
 axios.defaults.baseURL = `http://${ info.company }.teamwork.com`;
 axios.defaults.headers.common['Authorization'] = 'Basic ' + btoa(`${ info.API }:anything`);
 axios.defaults.headers.common['Accept'] = `application/json; charset=utf-8`;
+
+console.log(hasKeyGuard);
 
 class App extends Component {
   constructor() {
@@ -43,11 +48,15 @@ class App extends Component {
           >
             <MenuItem onTouchTap={ this.toggleSlideout.bind(this) }>Menu Item</MenuItem>
             <MenuItem onTouchTap={ this.toggleSlideout.bind(this) }>Menu Item 2</MenuItem>
+            <MenuItem onTouchTap={ this.removeApiKey.bind(this) }>Remove Api Key</MenuItem>
           </Drawer>
 
           <div className="wrapper">
             <div className="container">
-              <ProjectList></ProjectList>
+                <Router history={ browserHistory }>
+                  <Route path="/" component={ ProjectList } onEnter={ hasKeyGuard }></Route>
+                  <Route path="/key" component={ ChooseKey }></Route>
+                </Router>
             </div>
           </div>
         </div>
@@ -57,6 +66,12 @@ class App extends Component {
 
   toggleSlideout(){
     this.setState({ slideoutOpen: !this.state.slideoutOpen })
+  }
+
+  removeApiKey(){
+      localStorage.removeItem('api_key');
+      this.toggleSlideout();
+      browserHistory.push('/key');
   }
 }
 
