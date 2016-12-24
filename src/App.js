@@ -16,7 +16,6 @@ import { hasKeyGuard } from './guards/hasKeyGuard';
 import ProjectList from './components/ProjectList';
 import CompanyKeyContainer from './components/CompanyKeyContainer';
 
-axios.defaults.baseURL = `http://${ info.company }.teamwork.com`;
 axios.defaults.headers.common['Accept'] = `application/json; charset=utf-8`;
 
 class App extends Component {

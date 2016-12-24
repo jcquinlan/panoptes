@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
 
 class ChooseKey extends Component {
     render() {
         return (
-            <div>
-                <label htmlFor="key">Key</label>
-                <input type="text" id="key" onChange={ this.props.onChange } />
-            </div>
+            <TextField
+                onChange={ this.props.onChange }
+                underlineShow={ false } 
+                hintText="Your API Key"
+                hintStyle={{ marginBottom: '9px' }}
+                style={{ padding: '10px 20px', width: '100%' }}/>
         );
     }
 }
