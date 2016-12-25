@@ -77,7 +77,7 @@ class App extends Component {
     const api_key = localStorage.getItem('api_key');
     const company = localStorage.getItem('company');
 
-    if(user){
+    if(user && !this.state.user){
       this.setState({ user: JSON.parse(user) });
     } else if(api_key && company){
       axios.get('/me.json').then(response => {
@@ -97,8 +97,8 @@ class App extends Component {
   }
 
   setUser(user){
-    this.setState({ user });
-    localStorage.setItem('user', JSON.stringify(user));
+    this.setState({ user: JSON.parse(user) });
+    localStorage.setItem('user', user);
   }
 
   navigateTo(location){
