@@ -14,7 +14,6 @@ class ProjectItemContainer extends Component {
     componentDidMount() {
         axios.get(`projects/${ this.props.project.id }/time/total.json`)
             .then(response => {
-                console.log(response.data);
                 this.setState({ times: response.data.projects[0] })
             },
             error => {

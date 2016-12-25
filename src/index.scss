@@ -6,6 +6,15 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
-.wrapper {
+p, h1, h2, h3, h4, h5, h6, span, a, div {
+    color: #666;
+    font-family: 'Work Sans', Helvetica, sans-serif;
+    font-weight: 100;  
+}
+.wrap {
   margin-top: 80px;
+  max-width: 1200px;
+}
+.hidden {
+  display: none;
 }

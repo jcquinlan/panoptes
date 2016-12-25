@@ -20,7 +20,7 @@ class CompanyKeyContainer extends Component {
     render() {
         return (
             <div>
-                <Paper zDepth={ 2 }>
+                <Paper zDepth={ 1 }>
                     <ChooseKey onChange={ this.handleKeyChange.bind(this) }/>
                     <Divider />
                     <ChooseCompany onChange={ this.handleCompanyChange.bind(this) }/>
@@ -44,17 +44,24 @@ class CompanyKeyContainer extends Component {
         const company = this.state.company;
 
         if(key && company){
-            localStorage.setItem('api_key', this.state.key);
-            localStorage.setItem('company', this.state.company);
-
-            console.log(key);
-
             axios.defaults.baseURL = `http://${ company }.teamwork.com`;
-            axios.defaults.headers.common['Authorization'] = `Basic ${ atob(key) }:anything`;
+            axios.defaults.headers.common['Authorization'] = 'Basic ' + btoa(key + ':anything');
 
-            browserHistory.push('/');
+            axios.get('/me.json').then(response => {
+                // If it all goes smoothly, save locally, update User and Logged In, and route to projects.
+                if(response.status === 200){
+                    localStorage.setItem('api_key', this.state.key);
+                    localStorage.setItem('company', this.state.company);
+                    this.props.setUser(JSON.stringify(response.data.person));
+                    this.props.setLoggedIn(true);
+                    browserHistory.push('/');
+                }
+            },
+            error => {
+                this.props.setError('Provided information is incorrect.');
+            })
         }
-        
+     
     }
 }
 
