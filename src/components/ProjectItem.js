@@ -33,7 +33,16 @@ class ProjectItem extends Component {
                 showExpandableButton={ true }
                 />
             <CardText expandable={ true }>
-                { this.state.dataLoaded && <PersonTimeTable people={ this.state.people }/> }
+                <div className="row">
+                    <div className="col-xs-6">
+                        { this.state.dataLoaded && <PersonTimeTable people={ this.state.people } timeEntries={ this.state.timeEntries }/> }    
+                    </div>
+
+                    <div className="col-xs-6">
+                        { this.state.dataLoaded && <PersonTimeTable people={ this.state.people } timeEntries={ this.state.timeEntries }/> }    
+                    </div>
+                </div>
+                
             </CardText>
         </Card>
 
@@ -47,6 +56,7 @@ class ProjectItem extends Component {
         .then(axios.spread((timeEntries, people) => {
             const nonAdmins = people.data.people.filter(person => !person.administrator);
             this.setState({ dataLoaded: true, people: nonAdmins, timeEntries: timeEntries.data['time-entries' ]})
+            console.log(this.state.timeEntries);
         }));
   }
 

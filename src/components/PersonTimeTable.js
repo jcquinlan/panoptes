@@ -8,7 +8,9 @@ class PersonTimeTable extends Component {
             <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
                 <TableRow>
                     <TableHeaderColumn>Name</TableHeaderColumn>
-                    <TableHeaderColumn>Status</TableHeaderColumn>
+                    <TableHeaderColumn>Hours 2 Weeks Ago</TableHeaderColumn>
+                    <TableHeaderColumn>Hours Last Week</TableHeaderColumn>
+                    <TableHeaderColumn>Hours This Week</TableHeaderColumn>
                 </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={ false }>
@@ -23,11 +25,22 @@ class PersonTimeTable extends Component {
      return this.props.people.map(person => {
           return (
             <TableRow key={ person.id }>
-                <TableRowColumn>{ person['last-name'] }</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
+                <TableRowColumn>{ person['first-name'] + ' ' + person['last-name'] }</TableRowColumn>
+                <TableRowColumn>{ this.calculateTotalTime(person) }</TableRowColumn>
             </TableRow>
           )
       })
+  }
+
+  calculateTotalTime(person){
+      const id = person.id;
+      const time = this.props.timeEntries
+        .filter(entry => entry['person-id'] == person.id)
+        .reduce((sum, entry) => {
+            const minutes = entry.hours * 60;
+            return minutes + parseInt(entry.minutes);
+        }, 0)
+      return time;
   }
 }
 
