@@ -50,7 +50,7 @@ class App extends Component {
 
                   <MenuItem onTouchTap={ () => this.navigateTo('') }>Projects</MenuItem>
                   <MenuItem onTouchTap={ () => this.navigateTo('key') }>Configure Keys</MenuItem>
-                  <MenuItem onTouchTap={ this.logout.bind(this) }>Remove Api Key</MenuItem>
+                  <MenuItem onTouchTap={ this.logout.bind(this) }>Logout</MenuItem>
               </Drawer>
           }
 
