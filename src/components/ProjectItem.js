@@ -39,7 +39,7 @@ class ProjectItem extends Component {
                     </div>
 
                     <div className="col-xs-6">
-                        { this.state.dataLoaded && <PersonTimeTable people={ this.state.people } timeEntries={ this.state.timeEntries }/> }    
+                          
                     </div>
                 </div>
                 
@@ -52,20 +52,37 @@ class ProjectItem extends Component {
   handleExpandChange(){
       this.setState({ expanded: !this.state.expanded });
 
-      axios.all([this.getTimeEntries(), this.getPeople()])
-        .then(axios.spread((timeEntries, people) => {
-            const nonAdmins = people.data.people.filter(person => !person.administrator);
-            this.setState({ dataLoaded: true, people: nonAdmins, timeEntries: timeEntries.data['time-entries' ]})
-            console.log(this.state.timeEntries);
-        }));
+      if(!this.state.dataLoaded){
+        axios.all([this.getTimeEntries(), this.getPeople()])
+            .then(axios.spread((timeEntries, people) => {
+                console.log(timeEntries);
+                const nonAdmins = people.data.people.filter(person => !person.administrator);
+                this.setState({ dataLoaded: true, people: nonAdmins, timeEntries: timeEntries.data['time-entries' ]})
+            }));
+      }
   }
 
   getTimeEntries(){
-      return axios.get(`/projects/${ this.props.project.id }/time_entries.json`)
+      const today = new Date();
+      let two_weeks_ago = new Date();
+      two_weeks_ago = new Date(two_weeks_ago.setDate(two_weeks_ago.getDate() - 14));
+      
+      return axios.get(`/projects/${ this.props.project.id }/time_entries.json?fromdate=${ this.formatDate(two_weeks_ago) }&todate=${ this.formatDate(today) }`)
   }
 
   getPeople(){
       return axios.get(`/projects/${ this.props.project.id }/people.json`)
+  }
+
+  formatDate(date){
+      const month = this.appendZero(date.getMonth() + 1);
+      const date_number = this.appendZero(date.getDate());
+      return '' + date.getFullYear() + month + date_number;
+  }
+
+  appendZero(number){
+      if(number < 10) return '0' + number;
+      return number;
   }
 }
 
