@@ -12,7 +12,7 @@ injectTapEventPlugin();
 import axios from 'axios';
 import { hasKeyGuard } from './guards/hasKeyGuard';
 
-import ProjectList from './components/ProjectList';
+import ProjectListView from './views/ProjectListView';
 import AddCompanyKey from './views/AddCompanyKey';
 
 axios.defaults.headers.common['Accept'] = `application/json; charset=utf-8`;
@@ -56,7 +56,7 @@ class App extends Component {
 
             <div className="wrap container-fluid">
                 <Router history={ browserHistory }>
-                  <Route path="/" component={ ProjectList } onEnter={ hasKeyGuard }></Route>
+                  <Route path="/" component={ ProjectListView } onEnter={ hasKeyGuard }></Route>
                   <Route path="/key" 
                       component={ AddCompanyKey } 
                       setLoggedIn={ this.setLoggedIn.bind(this) }
