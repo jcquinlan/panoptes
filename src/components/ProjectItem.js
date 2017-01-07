@@ -32,6 +32,7 @@ class ProjectItem extends Component {
                 subtitle={ 'Created: ' + created_on.toLocaleTimeString("en-us", options) }
                 showExpandableButton={ true }
                 />
+            <CardText><strong>Hours To Date: </strong>{ this.props.timeTotal }</CardText>
             <CardText expandable={ true }>
                 <div className="row">
                     <div className="col-xs-6">

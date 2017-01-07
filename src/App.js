@@ -13,6 +13,7 @@ import axios from 'axios';
 import { hasKeyGuard } from './guards/hasKeyGuard';
 
 import ProjectListView from './views/ProjectListView';
+import PeopleListView from './views/PeopleListView';
 import AddCompanyKey from './views/AddCompanyKey';
 
 axios.defaults.headers.common['Accept'] = `application/json; charset=utf-8`;
@@ -49,6 +50,8 @@ class App extends Component {
                 onRequestChange={ this.toggleSlideout.bind(this) }>
 
                   <MenuItem onTouchTap={ () => this.navigateTo('') }>Projects</MenuItem>
+                  <MenuItem onTouchTap={ () => this.navigateTo('people') }>People</MenuItem>
+                  <span>______________</span>
                   <MenuItem onTouchTap={ () => this.navigateTo('key') }>Configure Keys</MenuItem>
                   <MenuItem onTouchTap={ this.logout.bind(this) }>Logout</MenuItem>
               </Drawer>
@@ -61,6 +64,7 @@ class App extends Component {
                       component={ AddCompanyKey } 
                       setLoggedIn={ this.setLoggedIn.bind(this) }
                       setUser={ this.setUser.bind(this) }></Route>
+                  <Route path="/people" component={ PeopleListView } onEnter={ hasKeyGuard }></Route>
                 </Router>
             </div>
         </div>
@@ -81,6 +85,7 @@ class App extends Component {
       this.setState({ user: JSON.parse(user) });
     } else if(api_key && company){
       axios.get('/me.json').then(response => {
+        localStorage.setItem('user', response.data.person);
         this.setState({ user: response.data.person });
       })
     }
