@@ -27,9 +27,9 @@ class PersonTimeTable extends Component {
           return (
             <TableRow key={ person.id }>
                 <TableRowColumn>{ person['first-name'] + ' ' + person['last-name'] }</TableRowColumn>
-                <TableRowColumn>{ this.calculateWeekTime(person, 0) } hrs.</TableRowColumn>
-                <TableRowColumn>{ this.calculateWeekTime(person, 1) } hrs.</TableRowColumn>
                 <TableRowColumn>{ this.calculateWeekTime(person, 2) } hrs.</TableRowColumn>
+                <TableRowColumn>{ this.calculateWeekTime(person, 1) } hrs.</TableRowColumn>
+                <TableRowColumn>{ this.calculateWeekTime(person, 0) } hrs.</TableRowColumn>
                 <TableRowColumn>{ this.calculateTotalTime(person) /  60 } hrs.</TableRowColumn>
             </TableRow>
           )
@@ -50,12 +50,13 @@ class PersonTimeTable extends Component {
       let current_time = new Date();
       let final_time = new Date();
       const current_day = current_time.getDay();
-      // If it is earlier than Friday (5), get the number of days until Friday
-      const day_difference = !(current_day >= 5) ?  5 - current_day : 0;
+      // If it is earlier than Saturday (6), get the number of days until Saturday
+      const day_difference = !(current_day >= 6) ?  6 - current_day : 0;
       final_time = Math.floor(final_time.setDate(final_time.getDate() + day_difference)) / 1000;
 
-      const day_in_seconds = 604800;
-      const timeframe = [final_time - (week * day_in_seconds), final_time - ((week * day_in_seconds) + day_in_seconds)];
+      const six_days_in_seconds = 518400;
+      const week_in_seconds = 604800;
+      const timeframe = [final_time - (week * week_in_seconds), final_time - ((week * week_in_seconds) + six_days_in_seconds)];
 
       const time = this.props.timeEntries
         .filter(entry => entry['person-id'] === person.id)

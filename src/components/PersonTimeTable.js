@@ -11,6 +11,12 @@ const PersonTimeTable = (props) => {
         })
     }
 
+    const getTotalHours = () => {
+        return props.times.reduce((sum, time) => {
+            return sum + ((parseInt(time.hours, 10) * 60) + parseInt(time.minutes, 10));
+        }, 0)
+    }
+
     const renderDayRow = () => {
         const today = new Date().getDay();
 
@@ -49,7 +55,7 @@ const PersonTimeTable = (props) => {
             <TableBody displayRowCheckbox={ false }>
                 <TableRow>
                     { renderDayRow() }
-                    <TableHeaderColumn>40</TableHeaderColumn>
+                    <TableHeaderColumn>{ getTotalHours() / 60 }</TableHeaderColumn>
                 </TableRow>
             </TableBody>
         </Table>

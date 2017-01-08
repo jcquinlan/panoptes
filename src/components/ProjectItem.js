@@ -61,7 +61,7 @@ class ProjectItem extends Component {
   getTimeEntries(){
       const today = new Date();
       let three_weeks_ago = new Date();
-      three_weeks_ago = new Date(three_weeks_ago.setDate(three_weeks_ago.getDate() - 21));
+      three_weeks_ago = new Date(three_weeks_ago.setDate(three_weeks_ago.getDate() - 14));
       
       return axios.get(`/projects/${ this.props.project.id }/time_entries.json?fromdate=${ this.formatDate(three_weeks_ago) }&todate=${ this.formatDate(today) }`)
   }
