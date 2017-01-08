@@ -46,9 +46,12 @@ class ProjectItemContainer extends Component {
   }
 
   getTimes(){
-      const today = new Date();
+      let today = new Date();
+      // Set Date object to 9am this morning
+      today = new Date(today.setHours(9, 0, 0));
       let one_week_ago = new Date();
-      one_week_ago = new Date(one_week_ago.setDate(one_week_ago.getDate() - 14));
+      // Create Date object for exactly one week prior
+      one_week_ago = new Date(one_week_ago.setDate(one_week_ago.getDate() - 7));
 
       return axios.get(`/time_entries.json?fromdate=${ this.formatDate(one_week_ago) }&todate=${ this.formatDate(today) }`)
   }

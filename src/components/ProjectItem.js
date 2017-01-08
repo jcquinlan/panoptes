@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardText, CardHeader } from 'material-ui/Card';
 import HorizontalBar from './HorizontalBar';
-import PersonTimeTable from './PersonTimeTable';
+import ProjectTimeTable from './ProjectTimeTable';
 import axios from 'axios';
 
 class ProjectItem extends Component {
@@ -35,12 +35,8 @@ class ProjectItem extends Component {
             <CardText><strong>Hours To Date: </strong>{ this.props.timeTotal }</CardText>
             <CardText expandable={ true }>
                 <div className="row">
-                    <div className="col-xs-6">
-                        { this.state.dataLoaded && <PersonTimeTable people={ this.state.people } timeEntries={ this.state.timeEntries }/> }    
-                    </div>
-
-                    <div className="col-xs-6">
-                          
+                    <div className="col-xs-12">
+                        { this.state.dataLoaded && <ProjectTimeTable people={ this.state.people } timeEntries={ this.state.timeEntries }/> }    
                     </div>
                 </div>
                 
@@ -56,7 +52,6 @@ class ProjectItem extends Component {
       if(!this.state.dataLoaded){
         axios.all([this.getTimeEntries(), this.getPeople()])
             .then(axios.spread((timeEntries, people) => {
-                console.log(timeEntries);
                 const nonAdmins = people.data.people.filter(person => !person.administrator);
                 this.setState({ dataLoaded: true, people: nonAdmins, timeEntries: timeEntries.data['time-entries' ]})
             }));
@@ -65,10 +60,10 @@ class ProjectItem extends Component {
 
   getTimeEntries(){
       const today = new Date();
-      let two_weeks_ago = new Date();
-      two_weeks_ago = new Date(two_weeks_ago.setDate(two_weeks_ago.getDate() - 14));
+      let three_weeks_ago = new Date();
+      three_weeks_ago = new Date(three_weeks_ago.setDate(three_weeks_ago.getDate() - 21));
       
-      return axios.get(`/projects/${ this.props.project.id }/time_entries.json?fromdate=${ this.formatDate(two_weeks_ago) }&todate=${ this.formatDate(today) }`)
+      return axios.get(`/projects/${ this.props.project.id }/time_entries.json?fromdate=${ this.formatDate(three_weeks_ago) }&todate=${ this.formatDate(today) }`)
   }
 
   getPeople(){

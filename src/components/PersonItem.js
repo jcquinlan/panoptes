@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardText, CardHeader } from 'material-ui/Card';
+import PersonTimeTable from './PersonTimeTable';
 
 const PersonItem = (props) => {
-
     return (
         <Card>
             <CardHeader
@@ -11,12 +11,8 @@ const PersonItem = (props) => {
                 />
             <CardText>
                 <div className="row">
-                    <div className="col-xs-6">
-                        Test   
-                    </div>
-
-                    <div className="col-xs-6">
-                          
+                    <div className="col-xs-12">
+                        <PersonTimeTable person={ props.person } times={ props.times }/>
                     </div>
                 </div>
                 

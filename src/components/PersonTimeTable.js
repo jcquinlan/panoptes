@@ -1,76 +1,60 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
-class PersonTimeTable extends Component {
-  render() {
+const PersonTimeTable = (props) => {
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',];
+
+    const renderDayHeaders = () => {
+        return days.map(day => {
+            return <TableHeaderColumn key={ day }>{ day }</TableHeaderColumn>
+        })
+    }
+
+    const renderDayRow = () => {
+        const today = new Date().getDay();
+
+        return days
+            .map((day, index) => {
+                let iterative_day = new Date();
+                let iterative_day_prior = new Date();
+
+                iterative_day = new Date(iterative_day.setDate(iterative_day.getDate() - (today - index)));
+                iterative_day_prior = new Date(iterative_day_prior.setDate(iterative_day_prior.getDate() - (today - (index + 1))));
+
+                iterative_day = new Date(iterative_day.setHours(9, 0, 0)).getTime();
+                iterative_day_prior = new Date(iterative_day_prior.setHours(9, 0, 0)).getTime();
+
+                const total = props.times.filter(time => {
+                    const date = new Date(time.date).getTime();
+                    return date > iterative_day && date < iterative_day_prior;
+
+                })
+                .reduce((sum, time) => {
+                    return sum + ((parseInt(time.hours, 10) * 60) + parseInt(time.minutes, 10));
+                }, 0)
+
+                return <TableRowColumn key={ day }>{ index >= today ? '-' : total / 60}</TableRowColumn>
+        })
+    }
+
     return (
         <Table>
             <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
                 <TableRow>
-                    <TableHeaderColumn>Name</TableHeaderColumn>
-                    <TableHeaderColumn>2 Weeks Ago</TableHeaderColumn>
-                    <TableHeaderColumn>Last Week</TableHeaderColumn>
-                    <TableHeaderColumn>This Week</TableHeaderColumn>
+                    { renderDayHeaders() }
                     <TableHeaderColumn>Total</TableHeaderColumn>
                 </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={ false }>
-                { this.renderPeopleRows() }
+                <TableRow>
+                    { renderDayRow() }
+                    <TableHeaderColumn>40</TableHeaderColumn>
+                </TableRow>
             </TableBody>
         </Table>
 
     );
-  }
-
-  renderPeopleRows(){
-     return this.props.people.map(person => {
-          return (
-            <TableRow key={ person.id }>
-                <TableRowColumn>{ person['first-name'] + ' ' + person['last-name'] }</TableRowColumn>
-                <TableRowColumn>{ this.calculateWeekTime(person, 0) } hrs.</TableRowColumn>
-                <TableRowColumn>{ this.calculateWeekTime(person, 1) } hrs.</TableRowColumn>
-                <TableRowColumn>{ this.calculateWeekTime(person, 2) } hrs.</TableRowColumn>
-                <TableRowColumn>{ this.calculateTotalTime(person) /  60 } hrs.</TableRowColumn>
-            </TableRow>
-          )
-      })
-  }
-
-  calculateTotalTime(person){
-      const id = person.id;
-      const time = this.props.timeEntries
-        .filter(entry => entry['person-id'] == person.id)
-        .reduce((sum, entry) => {
-            const minutes = entry.hours * 60;
-            return sum + minutes + parseInt(entry.minutes);
-        }, 0)
-      return time;
-  }
-
-  calculateWeekTime(person, week){
-      const id = person.id;
-      let current_time = new Date();
-      let final_time = new Date();
-      const current_day = current_time.getDay();
-      // If it is earlier than Friday (5), get the number of days until Friday
-      const day_difference = !(current_day >= 5) ?  5 - current_day : 0;
-      final_time = Math.floor(final_time.setDate(final_time.getDate() + day_difference)) / 1000;
-
-      const day_in_seconds = 604800;
-      const timeframe = [final_time - (week * day_in_seconds), final_time - ((week * day_in_seconds) + day_in_seconds)];
-
-      const time = this.props.timeEntries
-        .filter(entry => entry['person-id'] == person.id)
-        .filter(entry => {
-            const date = Math.floor(new Date(entry.date).getTime() / 1000);
-            return date < timeframe[0] && date > timeframe[1];
-        })
-        .reduce((sum, entry) => {
-            const minutes = entry.hours * 60;
-            return sum + minutes + parseInt(entry.minutes);
-        }, 0)
-      return (time / 60).toFixed(2);
-  }
 }
 
 export default PersonTimeTable;

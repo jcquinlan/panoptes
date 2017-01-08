@@ -1,11 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PersonItem from './PersonItem';
 
 const ProjectList = (props) => {
+
     const renderPeople = () => {
         return props.people.map(person => {
-            const times = props.timeEntries.filter(entry => entry['person-id'] == person.id);
-            return <PersonItem key={ person.id } person={ person } times={ times }/>
+            const times = props.timeEntries.filter(entry => entry['person-id'] === person.id);
+            return (
+                <div className="row" key={ person.id }>
+                    <div className="col-xs-12">
+                        <PersonItem person={ person } times={ times }/>
+                    </div>
+                </div>
+            )
         })
     }
 

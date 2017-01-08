@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
+import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
 injectTapEventPlugin();
 
@@ -36,6 +37,7 @@ class App extends Component {
         <div>
           <AppBar
             title={ "panoptes" + (this.state.user ? ' - ' + this.state.user['company-name'] : '') }
+            style={{ position: 'fixed', top: '0', backgroundColor: '#13C15B' }}
             zDepth={ 2 }
             titleStyle={{ fontWeight: '100', textAlign: 'center' }}
             showMenuIconButton={ this.hasCompanyKey() }
@@ -51,7 +53,7 @@ class App extends Component {
 
                   <MenuItem onTouchTap={ () => this.navigateTo('') }>Projects</MenuItem>
                   <MenuItem onTouchTap={ () => this.navigateTo('people') }>People</MenuItem>
-                  <span>______________</span>
+                  <Divider/>
                   <MenuItem onTouchTap={ () => this.navigateTo('key') }>Configure Keys</MenuItem>
                   <MenuItem onTouchTap={ this.logout.bind(this) }>Logout</MenuItem>
               </Drawer>
@@ -59,12 +61,7 @@ class App extends Component {
 
             <div className="wrap container-fluid">
                 <Router history={ browserHistory }>
-                  <Route path="/" component={ ProjectListView } onEnter={ hasKeyGuard }></Route>
-                  <Route path="/key" 
-                      component={ AddCompanyKey } 
-                      setLoggedIn={ this.setLoggedIn.bind(this) }
-                      setUser={ this.setUser.bind(this) }></Route>
-                  <Route path="/people" component={ PeopleListView } onEnter={ hasKeyGuard }></Route>
+                  { this.routes() }
                 </Router>
             </div>
         </div>
@@ -74,6 +71,19 @@ class App extends Component {
 
   componentDidMount(){
     this.getUserInfo();
+  }
+
+  routes(){
+    return (
+      <Route>
+        <Route path="/" component={ ProjectListView } onEnter={ hasKeyGuard }></Route>
+        <Route path="/key" 
+            component={ AddCompanyKey } 
+            setLoggedIn={ this.setLoggedIn.bind(this) }
+            setUser={ this.setUser.bind(this) }></Route>
+        <Route path="/people" component={ PeopleListView } onEnter={ hasKeyGuard }></Route>
+      </Route>
+    )
   }
 
   getUserInfo(){

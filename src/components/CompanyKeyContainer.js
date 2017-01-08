@@ -17,6 +17,12 @@ class CompanyKeyContainer extends Component {
         }
     }
 
+    styles(){
+        return {
+            marginTop: '20px',
+        }
+    }
+
     render() {
         return (
             <div>
@@ -25,7 +31,11 @@ class CompanyKeyContainer extends Component {
                     <Divider />
                     <ChooseCompany onChange={ this.handleCompanyChange.bind(this) }/>
                 </Paper>
-                <RaisedButton label="Save" onClick={ this.handleCompanyKeySubmit.bind(this) } primary={ true } style={{ marginTop: '20px' }}/>
+                <RaisedButton label="Save" 
+                    onClick={ this.handleCompanyKeySubmit.bind(this) }
+                    backgroundColor='#13C15B'
+                    labelColor='#fff'
+                    style={ this.styles() }/>
             </div>
         );
     }
