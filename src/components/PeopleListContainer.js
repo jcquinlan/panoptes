@@ -29,15 +29,24 @@ class ProjectItemContainer extends Component {
   }
 
   renderPeopleList() {
+        const peopleList = this.props.filterValue ? this.filterPeople() : this.state.people;
         return (
             <div className="row">
                 <div className="col-xs-12">
                     <PeopleList 
-                        people={ this.state.people }
+                        people={ peopleList }
+                        filterValue={ this.props.filterValue }
                         timeEntries={ this.state.timeEntries }/>
                 </div>
             </div>
         )
+  }
+
+  filterPeople(){
+      return this.state.people.filter(person => {
+          const name = (person['first-name'] + '' + person['last-name']).toLowerCase();
+          return name.indexOf(this.props.filterValue.toLowerCase()) > -1;
+      })
   }
 
   getPeople(){
