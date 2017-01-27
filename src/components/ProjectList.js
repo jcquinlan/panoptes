@@ -15,7 +15,8 @@ class ProjectList extends Component {
       const _this = this;
       axios.get('projects.json')
         .then(response => {
-            _this.setState({ projects: response.data.projects })
+            _this.setState({ projects: response.data.projects.filter(project => true ) })
+            console.log(_this.state.projects.length);
         },
         error => {
             console.log(error);

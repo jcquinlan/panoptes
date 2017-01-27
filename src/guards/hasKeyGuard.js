@@ -6,7 +6,7 @@ export const hasKeyGuard = (nextState, replace) => {
 
     if (!api_key || !company) {
         // If they don't have their key stored locally, force them to add one by redirecting them.
-        replace(`/key`);
+        replace(`/login`);
     } else {
         // If their key is already stored locally, set the Basic Auth username to it
         // and set the baseURL to their company

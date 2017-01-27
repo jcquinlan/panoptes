@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import CompanyKeyContainer from '../components/CompanyKeyContainer';
+import LoginContainer from '../containers/LoginContainer';
+import { LOGIN, SET_USER } from '../constants/actions';
 
-class AddCompanyKey extends Component {
-    constructor(){
-        super();
+class LoginView extends Component {
+    constructor(props){
+        super(props);
         this.state = {
             error: '',
         }
@@ -14,9 +17,7 @@ class AddCompanyKey extends Component {
             <div>
                 <h2 style={{ display: 'inline-block' }}>Please add your API Key and Company name.</h2>
                 { this.state.error && <p>{ this.state.error }</p> }
-                <CompanyKeyContainer 
-                    setLoggedIn={ this.props.route.setLoggedIn } 
-                    setUser={ this.props.route.setUser }
+                <LoginContainer
                     setError={ this.setError.bind(this) }/>
             </div>
         );
@@ -26,7 +27,15 @@ class AddCompanyKey extends Component {
         this.setState({ error });
     }
 
+    setLoggedIn(isLoggedIn){
+        this.props.dispatch({ type: LOGIN, isLoggedIn });
+    }
 
+    setUser(user){
+        this.props.dispatch({ type: SET_USER, user });
+    }
 }
 
-export default AddCompanyKey;
+LoginView = connect()(LoginView)                    
+
+export default LoginView;

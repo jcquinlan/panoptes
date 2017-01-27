@@ -9,12 +9,16 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 
 class CompanyKeyContainer extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             company: '',
             key: '',
         }
+
+        this.handleKeyChange = this.handleKeyChange.bind(this);
+        this.handleCompanyChange = this.handleCompanyChange.bind(this);
+        this.handleCompanyKeySubmit = this.handleCompanyKeySubmit.bind(this);
     }
 
     styles(){
@@ -27,12 +31,12 @@ class CompanyKeyContainer extends Component {
         return (
             <div>
                 <Paper zDepth={ 1 }>
-                    <ChooseKey onChange={ this.handleKeyChange.bind(this) }/>
+                    <ChooseKey onChange={ this.handleKeyChange }/>
                     <Divider />
-                    <ChooseCompany onChange={ this.handleCompanyChange.bind(this) }/>
+                    <ChooseCompany onChange={ this.handleCompanyChange }/>
                 </Paper>
                 <RaisedButton label="Save" 
-                    onClick={ this.handleCompanyKeySubmit.bind(this) }
+                    onClick={ this.handleCompanyKeySubmit }
                     backgroundColor='#13C15B'
                     labelColor='#fff'
                     style={ this.styles() }/>
@@ -62,8 +66,10 @@ class CompanyKeyContainer extends Component {
                 if(response.status === 200){
                     localStorage.setItem('api_key', this.state.key);
                     localStorage.setItem('company', this.state.company);
-                    this.props.setUser(JSON.stringify(response.data.person));
-                    this.props.setLoggedIn(true);
+                    localStorage.setItem('user', JSON.stringify(response.data.person));
+                    this.props.setUser(response.data.person);
+                    this.props.setIsLoggedIn(true);
+
                     browserHistory.push('/');
                 }
             },

@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
-import { Router, Route, browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 import './App.scss';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
+
+import CustomAppBarContainer from './containers/CustomAppBarContainer';
+import LogoutButtonContainer from './containers/LogoutButtonContainer';
+
+import { LOGIN, LOGOUT, SET_USER } from './constants/actions';
 injectTapEventPlugin();
 
 import axios from 'axios';
-import { hasKeyGuard } from './guards/hasKeyGuard';
-
-import ProjectListView from './views/ProjectListView';
-import PeopleListView from './views/PeopleListView';
-import AddCompanyKey from './views/AddCompanyKey';
 
 axios.defaults.headers.common['Accept'] = `application/json; charset=utf-8`;
 
@@ -28,41 +27,35 @@ class App extends Component {
       user: null,
     }
 
-    this.navigateTo.bind(this);
+    this.navigateTo = this.navigateTo.bind(this);
+    this.toggleSlideout = this.toggleSlideout.bind(this);
+    this.toggleSlideout = this.toggleSlideout.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   render() {
     return (
         <MuiThemeProvider>
         <div>
-          <AppBar
-            title={ "panoptes" + (this.state.user ? ' - ' + this.state.user['company-name'] : '') }
-            style={{ position: 'fixed', top: '0', backgroundColor: '#13C15B' }}
-            zDepth={ 2 }
-            titleStyle={{ fontWeight: '100', textAlign: 'center' }}
-            showMenuIconButton={ this.hasCompanyKey() }
-            onLeftIconButtonTouchTap={ this.toggleSlideout.bind(this) }
-          />
+          <CustomAppBarContainer toggleSlideout={ this.toggleSlideout }/>
 
           { this.hasCompanyKey() && 
               <Drawer
                 docked={ false }
                 width={  400 }
                 open={ this.state.slideoutOpen }
-                onRequestChange={ this.toggleSlideout.bind(this) }>
+                onRequestChange={ this.toggleSlideout }>
 
                   <MenuItem onTouchTap={ () => this.navigateTo('') }>Projects</MenuItem>
                   <MenuItem onTouchTap={ () => this.navigateTo('people') }>People</MenuItem>
                   <Divider/>
                   <MenuItem onTouchTap={ () => this.navigateTo('key') }>Configure Keys</MenuItem>
-                  <MenuItem onTouchTap={ this.logout.bind(this) }>Logout</MenuItem>
+                  <LogoutButtonContainer text={ 'Logout' }/>
               </Drawer>
           }
 
             <div className="wrap container-fluid">
-                <Router history={ browserHistory }>
-                  { this.routes() }
-                </Router>
+                { this.props.children }
             </div>
         </div>
         </MuiThemeProvider>
@@ -71,19 +64,6 @@ class App extends Component {
 
   componentDidMount(){
     this.getUserInfo();
-  }
-
-  routes(){
-    return (
-      <Route>
-        <Route path="/" component={ ProjectListView } onEnter={ hasKeyGuard }></Route>
-        <Route path="/key" 
-            component={ AddCompanyKey } 
-            setLoggedIn={ this.setLoggedIn.bind(this) }
-            setUser={ this.setUser.bind(this) }></Route>
-        <Route path="/people" component={ PeopleListView } onEnter={ hasKeyGuard }></Route>
-      </Route>
-    )
   }
 
   getUserInfo(){
