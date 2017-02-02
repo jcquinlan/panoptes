@@ -50,7 +50,7 @@ class App extends Component {
                   <MenuItem onTouchTap={ () => this.navigateTo('people') }>People</MenuItem>
                   <Divider/>
                   <MenuItem onTouchTap={ () => this.navigateTo('key') }>Configure Keys</MenuItem>
-                  <LogoutButtonContainer text={ 'Logout' }/>
+                  <LogoutButtonContainer text={ 'Logout' } toggleSlideout={ this.toggleSlideout }/>
               </Drawer>
           }
 
