@@ -4,7 +4,7 @@ import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
-const PeopleToolbar = (props) => {
+const ProjectToolbar = (props) => {
 
     return (
         <Paper zDepth={ 1 }>
@@ -13,15 +13,15 @@ const PeopleToolbar = (props) => {
                 <FilterContainer handleValueChange={ props.handleValueChange }/>
             </ToolbarGroup>
             <ToolbarGroup>
-                <Chip backgroundColor={ '#13C15B' } labelColor={ '#fff' }>{ props.numberOfPeople } total</Chip>
+                <Chip backgroundColor={ '#13C15B' } labelColor={ '#fff' }>{ props.numberOfProjects } total</Chip>
             </ToolbarGroup>
         </Toolbar>
         </Paper>
     );
 }
 
-PeopleToolbar.propTypes = {
-    numberofPeople: React.PropTypes.number,
+ProjectToolbar.propTypes = {
+    numberofProjects: React.PropTypes.number,
 }
 
-export default PeopleToolbar;
+export default ProjectToolbar;

@@ -7,8 +7,8 @@ import App from './App';
 import { hasKeyGuard } from './guards/hasKeyGuard';
 import { SET_USER, LOGIN } from './constants/actions';
 
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import reducer from './reducers';
 
 import ProjectListView from './views/ProjectListView';

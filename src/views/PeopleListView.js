@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PeopleListContainer from '../components/PeopleListContainer';
 import ViewTitle from '../components/ViewTitle';
 import PeopleToolbar from '../components/PeopleToolbar';
+import CustomLoadingSpinner from '../components/CustomLoadingSpinner';
 
 import axios from 'axios';
 
@@ -29,8 +30,9 @@ class ProjectListView extends Component {
         return (
             <div>
                 <ViewTitle>People</ViewTitle>
-                <PeopleToolbar handleValueChange={ this.setFilterValue } numberOfPeople={ this.state.people.length }/>
-                <PeopleListContainer people={ this.state.people } timeEntries={ this.state.timeEntries } filterValue={ this.state.filterValue }/>
+                { !this.state.people.length && <CustomLoadingSpinner/> }
+                { this.state.people.length && <PeopleToolbar handleValueChange={ this.setFilterValue } numberOfPeople={ this.state.people.length }/> }
+                { this.state.people.length && <PeopleListContainer people={ this.state.people } timeEntries={ this.state.timeEntries } filterValue={ this.state.filterValue }/> }
             </div>
         );
     }
@@ -39,8 +41,8 @@ class ProjectListView extends Component {
         this.setState({ error });
     }
 
-    setFilterValue(event, value){
-        this.setState({ filterValue: value });
+    setFilterValue(event){
+        this.setState({ filterValue: event.target.value });
     }
 
     filterPeople(){

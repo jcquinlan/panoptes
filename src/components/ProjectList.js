@@ -1,37 +1,28 @@
 import React, { Component } from 'react';
 import ProjectItemContainer from './ProjectItemContainer';
+import CustomLoadingSpinner from './CustomLoadingSpinner';
 
 import axios from 'axios';
 
-class ProjectList extends Component {
-  constructor() {
-        super();
-        this.state = {
-            projects: null,
-        }
-  }
+const ProjectList = (props) => {
 
-  componentDidMount() {
-      const _this = this;
-      axios.get('projects.json')
-        .then(response => {
-            _this.setState({ projects: response.data.projects.filter(project => true ) })
-            console.log(_this.state.projects.length);
-        },
-        error => {
-            console.log(error);
+    const renderProjects = () => {
+      return props.projects
+        .filter(project => {
+            const project_name = project.name.toLowerCase();
+            return project_name.indexOf(props.filterValue.toLowerCase()) > -1;
         })
-  }
+        .map(project => {
+            return <ProjectItemContainer key={ project.id } project={ project }/>
+        })
+    }
 
-  render() {
-    return <div>{ this.state.projects && this.renderProjects() }</div>;
-  }
-
-  renderProjects() {
-      return this.state.projects.map(project => {
-          return <ProjectItemContainer key={ project.id } project={ project }/>
-      })
-  }
+    return (
+        <div>
+            { !props.projects &&  <CustomLoadingSpinner/>}
+            { props.projects && renderProjects() }
+        </div>
+    )
 }
 
 export default ProjectList;

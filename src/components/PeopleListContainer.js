@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PeopleList from './PeopleList';
 
-const PeopleListContainer = (props) => {
+class PeopleListContainer extends PureComponent {
+    constructor(props){
+        super(props);
+    }
 
-    return (
-        <div className="row">
-            <div className="col-xs-12">
-                <PeopleList 
-                    people={ props.people }
-                    filterValue={ props.filterValue }
-                    timeEntries={ props.timeEntries }/>
+    render(){
+        const people = this.props.people.filter(person => {
+            const name = (`${ person['first-name'] } ${ person['last-name'] }`).toLowerCase();
+            return name.indexOf(this.props.filterValue.toLowerCase()) > -1;
+        })
+        return (
+            <div className="row">
+                <div className="col-xs-12">
+                    <PeopleList 
+                        people={ people }
+                        timeEntries={ this.props.timeEntries }/>
+                </div>
             </div>
-        </div>
-    ); 
+        ); 
+    }
 }
 
 export default PeopleListContainer;

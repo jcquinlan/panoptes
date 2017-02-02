@@ -16,6 +16,7 @@ const mapDispatchToProps = (dispatch) => {
             localStorage.removeItem('company');
             localStorage.removeItem('user');
             browserHistory.push('/login');
+            dispatch({ type: 'SET_USER', user: null })
             dispatch({ type: 'LOGOUT' });
         },
     }
