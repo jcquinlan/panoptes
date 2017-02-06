@@ -19,6 +19,14 @@ class ProjectListView extends Component {
         this.setFilterValue = this.setFilterValue.bind(this);
     }
 
+    shouldComponenUpdate(nextProps, nextState){
+        if(this.state.error != nextState.error) return true;
+        if(this.state.filterValue != nextState.filterValue) return true;
+        if(this.state.people != nextState.people) return true;
+        if(this.state.timeEntries != nextState.timeEntries) return true;
+        return false;
+    }
+
     componentDidMount() {
         axios.all([this.getTimes(), this.getPeople()])
             .then(axios.spread((timeEntries, people) => {
