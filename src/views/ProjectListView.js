@@ -17,6 +17,13 @@ class ProjectListView extends Component {
         this.setFilterValue = this.setFilterValue.bind(this);
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        if(this.state.error != nextState.error) return true;
+        if(this.state.filterValue != nextState.filterValue) return true;
+        if(this.state.projects != nextState.projects) return true;
+        return false;
+    }
+
     componentDidMount() {
       const _this = this;
       axios.get('projects.json')
